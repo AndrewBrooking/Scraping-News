@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Using the Schema constructor, create a new UserSchema object
-const ArticleSchema = new Schema({
+const SavedSchema = new Schema({
     // `title` is required and of type String
     title: {
         type: String,
@@ -29,7 +29,7 @@ const ArticleSchema = new Schema({
 });
 
 // This creates our model from the above schema, using mongoose's model method
-const Article = mongoose.model("Article", ArticleSchema);
+const Saved = mongoose.model("Saved", SavedSchema);
 
 // Export the Article model
-module.exports = Article;
+module.exports = Saved;

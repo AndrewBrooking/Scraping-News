@@ -1,0 +1,19 @@
+<div class="main-wrapper">
+    {{> nav }}
+
+    <br>
+
+    <div class="container">
+        <div class="row">
+            {{#if articles}}
+                {{#each articles}}
+                    {{> article}}
+                {{/each}}
+            {{else}}
+                <div class="col s12">
+                    <p class="flow-text center-align">No articles found. Click the `Scrape` button to get started.</p>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

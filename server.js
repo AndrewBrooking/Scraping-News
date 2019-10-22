@@ -13,6 +13,8 @@ const app = express();
 // Connect to MongoDB
 mongoose.connect(MONGODB_URI);
 
+const db = require("./models");
+
 // Set up express
 app.use(express.urlencoded({
     extended: true
@@ -27,7 +29,8 @@ app.engine("handlebars", exphbs({
 
 app.set("view engine", "handlebars");
 
-require("./models");
+require("./routes/getRoutes")(app, db);
+require("./routes/postRoutes")(app, db);
 
 // Start the server
 app.listen(PORT, function () {
