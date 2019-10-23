@@ -10,14 +10,16 @@ const ArticleSchema = new Schema({
         type: String,
         required: true
     },
-    // `blurb` is of type String
-    blurb: {
-        type: String
-    },
     // `link` is required and of type String
     link: {
         type: String,
         required: true
+    },
+    // `saved` is required and of type Boolean with a default value of false
+    saved: {
+        type: Boolean,
+        required: true,
+        default: false
     },
     // `note` is an object that stores a Note id
     // The ref property links the ObjectId to the Note model
