@@ -2,7 +2,7 @@ module.exports = (app, db) => {
 
     // Display data to the client
     app.get("/", (req, res) => {
-        db.Article.find().then((result) => {
+        db.Article.find({saved: false}).then((result) => {
             res.render("index", {
                 articles: result
             });
