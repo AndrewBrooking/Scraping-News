@@ -1,15 +1,15 @@
-<div class="col s12 m6 l4 xl2">
+<div class="col s12 m6 l4">
     <div class="card primary-gradient card-hover">
 
         <div class="card-content">
-            <p class="flow-text left-align">{{ title }}</p>
+            <p class="flow-text left-align white-text">{{ title }}</p>
         </div>
 
         <div class="card-action">
             <a class="waves-effect waves-light btn danger-gradient white-text" href="{{ link }}"
                 target="_blank">View Article</a>
-            <a class="waves-effect waves-light btn danger-gradient white-text view-article"
-                data-id="{{ _id }}">Notes</a>
+            <a class="waves-effect waves-light btn danger-gradient white-text view-article modal-trigger"
+                href="#modal_{{_id}}" data-id="{{ _id }}">Notes</a>
             {{#if saved }}
                 <a class="waves-effect waves-light btn warning-gradient white-text unsave-article"
                     data-id="{{ _id }}">Remove Article</a>
@@ -20,3 +20,28 @@
         </div>
     </div>
 </div>
+
+{{!-- <div class="modal" id="modal_{{_id}}">
+    <div class="modal-content">
+        <h4>{{ title }}</h4>
+
+        <form>
+            <div class="input-field col s10">
+                <input type="text" id="title-input" class="validate">
+                <label for="title-input">Note Title</label>
+            </div>
+            <div class="input-field col s12">
+                <textarea class="materialize-textarea" id="body-input">
+                <label for="body-input">Note Text</label>
+            </div>
+        </form>
+
+    TODO: Buttons
+    </div>
+
+    <div class="modal-footer">
+        {{#each note}}
+            <p>Note will go here</p>
+        {{/each}}
+    </div>
+</div> --}}

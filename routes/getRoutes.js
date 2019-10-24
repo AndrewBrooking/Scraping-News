@@ -1,8 +1,13 @@
+const axios = require("axios");
+const cheerio = require("cheerio");
+
 module.exports = (app, db) => {
 
     // Display data to the client
     app.get("/", (req, res) => {
-        db.Article.find({saved: false}).then((result) => {
+        db.Article.find({
+            saved: false
+        }).populate("note").then((result) => {
             res.render("index", {
                 articles: result
             });
@@ -12,43 +17,49 @@ module.exports = (app, db) => {
     });
 
     // Scrape data and display it to the client
-    app.get("/scrape", (req, res) => {
+    app.get("/scrape", function (req, res) {
+        console.log("Received request to scrape");
+
         axios.get("https://www.theonion.com/").then(function (response) {
+            console.log("Received data from axios");
+
             const $ = cheerio.load(response.data);
 
             let data = [];
 
-            $("article.js_post_item").each(function (i, element) {
-                // Save an empty result object
-                let article = {};
+            console.log("Searching for articles");
+
+            $("section.content-meta__headline__wrapper a").each(function (i, element) {
+                // console.log(i);
 
                 // Store article data
-                article.title = $(this)
-                    .children("a")
-                    .text();
+                let newArticle = {
+                    title: $(element).text(),
+                    link: $(element).attr("href")
+                };
 
-                article.link = $(this)
-                    .children("a")
-                    .attr("href");
+                if (newArticle.title !== 'Continue Reading' && newArticle.title !== '' && newArticle.title !== undefined && newArticle.title !== null) {
+                    // console.log(newArticle);
 
-                article.saved = false;
-
-                // Create a new Article using the `article` object built from scraping
-                db.Article.create(article)
-                    .then(function (result) {
-                        // View the added result in the console
-                        console.log(result);
-                        data.push(result);
-                    })
-                    .catch(function (err) {
-                        // If an error occurred, log it
-                        console.log(err);
-                        return err;
-                    });
+                    // Create a new Article using the `newArticle` object built from scraping
+                    db.Article.create(newArticle)
+                        .then(function (dbArticle) {
+                            // View the added dbArticle in the console
+                            // console.log(dbArticle);
+                            data.push(dbArticle);
+                        })
+                        .catch(function (err) {
+                            // If an error occurred, log it
+                            console.log(err);
+                            return err;
+                        });
+                }
             });
 
-            return data;
-        }).then((data) => {
+            console.log("Finshed");
+
+            // console.log(data);
+
             res.render("index", {
                 articles: data
             });
@@ -61,8 +72,9 @@ module.exports = (app, db) => {
     app.get("/saved", (req, res) => {
         db.Article.find({
             saved: true
-        }).then((result) => {
-            res.json("index", {
+        }).populate("note").then((result) => {
+            res.render("index", {
+                saved: true,
                 articles: result
             });
         }).catch((error) => {
@@ -75,11 +87,7 @@ module.exports = (app, db) => {
         db.Article.findOne({
             _id: req.params.id
         }).populate("note").then((article) => {
-            let result = {
-                viewArticle: true,
-                article: article
-            }
-            res.render("/index", article);
+            res.json(article);
         }).catch((error) => {
             res.send(error);
         });

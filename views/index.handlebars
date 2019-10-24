@@ -11,13 +11,13 @@
                 {{/each}}
             {{else}}
                 <div class="col s12">
-                    <p class="flow-text center-align">No articles found. Click the `Scrape` button to get started.</p>
+                    {{#if saved}}
+                        <p class="flow-text center-align">No articles saved. First save some articles. <a href="/">Go home</a>.</p>
+                    {{else}}
+                        <p class="flow-text center-align">No articles found. Click the `Scrape` button to get started.</p>
+                    {{/if}}
                 </div>
             {{/if}}
         </div>
-
-        {{#if viewArticle}}
-            <!-- TODO: Article modal -->
-        {{/if}}
     </div>
 </div>
